@@ -24,32 +24,13 @@ public class ItemBasedRecommendation {
 
 	public static void main(String[] args) {
 		try {
-
-			// Step 1:- Input CSV file (CSV file should be in userID, itemID,
-			// preference) format
-
-			// DataModel dm = new FileDataModel(new File("filePath"));
-
-			// Step 2:- Create UserSimilarity or ItemSimilarity Matrix
-
-			// Step 3:- Create UserNeighbourHood object. (No Need to create
-			// ItemNeighbourHood object while creating
-			// Item based Recommendation)
-
-			// Step 4:- Create object of UserBasedRecommender or
-			// ItemBasedRecommender
-
-			// Step 5:- Call the Generated Recommender in previous step to
-			// getting
-			// recommendation for particular user or Item
-
-			DataModel model = new FileDataModel(new File("/Users/xiaofengli/documents/cmpe239/lab1/lab1.csv"));
-			Collection<GenericItemSimilarity.ItemItemSimilarity> correlations = new ArrayList<GenericItemSimilarity.ItemItemSimilarity>();
-			ItemSimilarity itemSimilarity = new GenericItemSimilarity(
-					correlations);
-			Recommender recommender = new GenericItemBasedRecommender(model, itemSimilarity);
+			DataModel model = new FileDataModel(new File("/Users/xiaofengli/Documents/CMPE239/cmpe239-project-A/movienight_2.csv"));
+			//Collection<GenericItemSimilarity.ItemItemSimilarity> correlations = new ArrayList<GenericItemSimilarity.ItemItemSimilarity>();
+			//ItemSimilarity itemSimilarity = new GenericItemSimilarity(correlations);
+			ItemSimilarity similarity = new PearsonCorrelationSimilarity(model);
+			Recommender recommender = new GenericItemBasedRecommender(model, similarity);
 			Recommender cachingRecommender = new CachingRecommender(recommender);
-			List<RecommendedItem> recommendations = cachingRecommender.recommend(2, 1);
+			List<RecommendedItem> recommendations = cachingRecommender.recommend(4, 3);
 			for (RecommendedItem item : recommendations) {
 				System.out.println(item);
 			}

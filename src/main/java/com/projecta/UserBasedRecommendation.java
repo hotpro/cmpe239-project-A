@@ -17,32 +17,11 @@ public class UserBasedRecommendation {
 
 	public static void main(String[] args) {
 		try {
-
-			// Step 1:- Input CSV file (CSV file should be in userID, itemID,
-			// preference) format
-
-			// DataModel dm = new FileDataModel(new File("filePath"));
-
-			// Step 2:- Create UserSimilarity or ItemSimilarity Matrix
-
-			// Step 3:- Create UserNeighbourHood object. (No Need to create
-			// ItemNeighbourHood object while creating
-			// Item based Recommendation)
-
-			// Step 4:- Create object of UserBasedRecommender or
-			// ItemBasedRecommender
-
-			// Step 5:- Call the Generated Recommender in previous step to
-			// getting
-			// recommendation for particular user or Item
-			
-			
-			
-			DataModel model = new FileDataModel(new File("/Users/xiaofengli/documents/cmpe239/lab1/lab1.csv"));
+			DataModel model = new FileDataModel(new File("/Users/xiaofengli/Documents/CMPE239/cmpe239-project-A/movienight_2.csv"));
 			UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
 			UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
 			UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
-			List<RecommendedItem> recommendations = recommender.recommend(2, 3);
+			List<RecommendedItem> recommendations = recommender.recommend(2, 4);
 			for (RecommendedItem item : recommendations) {
 				System.out.println(item);
 			}

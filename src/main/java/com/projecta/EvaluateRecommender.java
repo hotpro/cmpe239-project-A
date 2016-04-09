@@ -21,7 +21,7 @@ public class EvaluateRecommender {
 		DataModel model = new FileDataModel(new File("/Users/xiaofengli/documents/cmpe239/lab1/lab1.csv"));
 		RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator();
 		RecommenderBuilder builder = new MyRecommenderBuilder();
-		double result = evaluator.evaluate(builder, null, model, 0.9, 1.0);
+		double result = evaluator.evaluate(builder, null, model, 0.7, 1.0);
 		System.out.println(result);
 	}
 
