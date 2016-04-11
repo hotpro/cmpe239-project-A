@@ -14,11 +14,13 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
+import org.apache.mahout.common.RandomUtils;
 
 public class EvaluateRecommender {
 	
 	public static void main(String[] args) throws Exception {
-		DataModel model = new FileDataModel(new File("/Users/xiaofengli/documents/cmpe239/lab1/lab1.csv"));
+		RandomUtils.useTestSeed();
+		DataModel model = new FileDataModel(new File("/Users/xiaofengli/Documents/CMPE239/cmpe239-project-A/movienight_2.csv"));
 		RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator();
 		RecommenderBuilder builder = new MyRecommenderBuilder();
 		double result = evaluator.evaluate(builder, null, model, 0.7, 1.0);
