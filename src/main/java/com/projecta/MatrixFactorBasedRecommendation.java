@@ -2,6 +2,7 @@ package com.projecta;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.LogManager;
 
 import org.apache.spark.api.java.*;
 import org.apache.spark.api.java.function.Function;
@@ -67,41 +68,5 @@ public class MatrixFactorBasedRecommendation {
 	    		System.out.println("User: " + r.user() + ", Product: " + r.product() + ", Rating: " + r.rating());
 	    	}
 	    }
-	    
-	    
-	    // Evaluate the model on rating data
-	    JavaRDD<Tuple2<Object, Object>> userProducts = ratings.map(
-	      new Function<Rating, Tuple2<Object, Object>>() {
-	        public Tuple2<Object, Object> call(Rating r) {
-	          return new Tuple2<Object, Object>(r.user(), r.product());
-	        }
-	      }
-	    );
-	    
-	    JavaPairRDD<Tuple2<Integer, Integer>, Double> predictions = JavaPairRDD.fromJavaRDD(
-	      model.predict(JavaRDD.toRDD(userProducts)).toJavaRDD().map(
-	        new Function<Rating, Tuple2<Tuple2<Integer, Integer>, Double>>() {
-	          public Tuple2<Tuple2<Integer, Integer>, Double> call(Rating r){
-	            return new Tuple2<Tuple2<Integer, Integer>, Double>(new Tuple2<Integer, Integer>(r.user(), r.product()), r.rating());
-	          }
-	        }
-	      ));
-	    JavaRDD<Tuple2<Double, Double>> ratesAndPreds =
-	      JavaPairRDD.fromJavaRDD(ratings.map(
-	        new Function<Rating, Tuple2<Tuple2<Integer, Integer>, Double>>() {
-	          public Tuple2<Tuple2<Integer, Integer>, Double> call(Rating r){
-	            return new Tuple2<Tuple2<Integer, Integer>, Double>(new Tuple2<Integer, Integer>(r.user(), r.product()), r.rating());
-	          }
-	        }
-	      )).join(predictions).values();
-	    double MSE = JavaDoubleRDD.fromRDD(ratesAndPreds.map(
-	      new Function<Tuple2<Double, Double>, Object>() {
-	        public Object call(Tuple2<Double, Double> pair) {
-	          Double err = pair._1() - pair._2();
-	          return err * err;
-	        }
-	      }
-	    ).rdd()).mean();
-	    System.out.println("Mean Squared Error = " + MSE);
 	}
 }
