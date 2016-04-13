@@ -27,7 +27,8 @@ import org.apache.mahout.common.RandomUtils;
 
 public class UserBasedEvaluate {
 	public static void main(String[] args) throws Exception {
-		DataModel model = new FileDataModel(new File("/Users/huanli/documents/cs/239/project1/cmpe239-project-A/movienight_2.csv"));
+		//RandomUtils.useTestSeed();
+		DataModel model = new FileDataModel(new File("movienight_2.csv"));
 		RecommenderEvaluator evaluator = new RMSRecommenderEvaluator();
 		RecommenderBuilder builder = new UserRecommenderBuilder();
 		double sum = 0;
