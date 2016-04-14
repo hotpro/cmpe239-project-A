@@ -23,7 +23,7 @@ public class UserBasedRecommendation {
 	public static void main(String[] args) {
 		try {
 			RandomUtils.useTestSeed();
-			DataModel model = new FileDataModel(new File("/Users/xiaofengli/Documents/CMPE239/cmpe239-project-A/movienight_2.csv"));
+			DataModel model = new FileDataModel(new File("movienight_2.csv"));
 			UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
 			UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
 			UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);

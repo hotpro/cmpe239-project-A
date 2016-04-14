@@ -28,7 +28,7 @@ public class ItemBasedRecommendation {
 
 	public static void main(String[] args) {
 		try {
-			DataModel model = new FileDataModel(new File("/Users/xiaofengli/Documents/CMPE239/cmpe239-project-A/movienight_2.csv"));
+			DataModel model = new FileDataModel(new File("movienight_2.csv"));
 			//Collection<GenericItemSimilarity.ItemItemSimilarity> correlations = new ArrayList<GenericItemSimilarity.ItemItemSimilarity>();
 			//ItemSimilarity itemSimilarity = new GenericItemSimilarity(correlations);
 			ItemSimilarity similarity = new PearsonCorrelationSimilarity(model);
