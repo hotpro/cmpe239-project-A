@@ -21,6 +21,10 @@ import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 public class ItemBasedRecommendation {
+	
+	private static final long USER_ID = 6L;
+	
+	private static final int RECOMMENDED_ITEM_NUM = 3;
 
 	public static void main(String[] args) {
 		try {
@@ -30,7 +34,7 @@ public class ItemBasedRecommendation {
 			ItemSimilarity similarity = new PearsonCorrelationSimilarity(model);
 			Recommender recommender = new GenericItemBasedRecommender(model, similarity);
 			Recommender cachingRecommender = new CachingRecommender(recommender);
-			List<RecommendedItem> recommendations = cachingRecommender.recommend(4, 3);
+			List<RecommendedItem> recommendations = cachingRecommender.recommend(USER_ID, RECOMMENDED_ITEM_NUM);
 			for (RecommendedItem item : recommendations) {
 				System.out.println(item);
 			}
