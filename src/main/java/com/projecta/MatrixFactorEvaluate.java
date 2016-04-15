@@ -13,18 +13,13 @@ import org.apache.mahout.common.RandomUtils;
 import scala.Tuple2;
 
 public class MatrixFactorEvaluate {
+	private final static int RANK = 5;
+	private final static int NUM_ITERATIONS = 8;
 	private static double lambda;
-	private static int rank;
-	private static int numIterations;
 	
 	public static void main(String[] args) {
-		lambda = 0.1;
-		rank = 5;
-		numIterations = 8;
-		
-		//RandomUtils.useTestSeed();
 		Logger.getLogger("org").setLevel(Level.OFF);
-		String path = "/Users/huanli/documents/cs/239/project1/cmpe239-project-A/movienight_2.csv";
+		String path = "movienight_2.csv";
 		SparkConf conf = new SparkConf().setAppName("Matrix Factor Based Recommendation").setMaster("local[2]");
 		JavaSparkContext jsc = new JavaSparkContext(conf);
 		JavaRDD<String> data = jsc.textFile(path);
@@ -37,6 +32,9 @@ public class MatrixFactorEvaluate {
 	        }
 	      }
 	    );
+	    
+	    //Test the relation between RMSE and lambda
+	    lambda = 0.01;
 	    while (lambda < 1) {
 	    	System.out.println("lambda=" + lambda + ", " + getRMSE(ratings));
 	    	lambda += 0.1;
@@ -50,7 +48,7 @@ public class MatrixFactorEvaluate {
 	    
 	    //int rank = 10;
 	    //int numIterations = 10;
-	    MatrixFactorizationModel model = ALS.train(JavaRDD.toRDD(training), rank, numIterations, lambda, 1, 2000);
+	    MatrixFactorizationModel model = ALS.train(JavaRDD.toRDD(training), RANK, NUM_ITERATIONS, lambda, 1, 2000);
 	    
 	    JavaRDD<Tuple2<Object, Object>> userProducts = test.map(
 	      new Function<Rating, Tuple2<Object, Object>>() {
