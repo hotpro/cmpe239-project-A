@@ -16,7 +16,7 @@ import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 
 public class ItemBasedEvaluate {
 	public static void main(String[] args) throws Exception {
-		DataModel model = new FileDataModel(new File("/Users/huanli/documents/cs/239/project1/cmpe239-project-A/movienight_2.csv"));
+		DataModel model = new FileDataModel(new File("movienight_2.csv"));
 		RecommenderEvaluator evaluator = new RMSRecommenderEvaluator();
 		RecommenderBuilder builder = new ItemRecommenderBuilder();
 		double sum = 0;

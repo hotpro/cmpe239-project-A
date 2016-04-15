@@ -18,8 +18,8 @@ public class MatrixFactorBasedRecommendation {
 
     static SparkConf conf;
     static JavaSparkContext sc;
-    static int userId = 10;
-    static int itemNum = 5;
+    final static int USER_ID = 10;
+    final static int ITEM_NUM = 5;
 
     public static void main(String args[]) {
     	Logger.getLogger("org").setLevel(Level.OFF);
@@ -29,8 +29,8 @@ public class MatrixFactorBasedRecommendation {
         sc = new JavaSparkContext(conf);
 
         //Reading Data
-        final JavaRDD<String> ratingData = sc.textFile("/Users/huanli/documents/cs/239/project1/cmpe239-project-A/matrixFactorData.csv");
-	    JavaRDD<String> productData = sc.textFile("/Users/huanli/documents/cs/239/project1/cmpe239-project-A/movies.csv");
+        final JavaRDD<String> ratingData = sc.textFile("matrixFactorData.csv");
+	    JavaRDD<String> productData = sc.textFile("movies.csv");
 
 
 	    //Ratings file should be csv file in a (UserID, MovieID, Rating,timestamp) Format
@@ -67,6 +67,7 @@ public class MatrixFactorBasedRecommendation {
                 public Boolean call(Tuple2<Integer, Rating> tuple) throws Exception {
                     return tuple._1() < 6;
                     // write your logic to create training data set based on timestamp from input dataset
+                    // If the last digit of timestamp is less than 6, the data will be put into rating set
                 }
             }
 	    ).map(
@@ -85,7 +86,6 @@ public class MatrixFactorBasedRecommendation {
             new Function<Tuple2<Integer, Rating>, Boolean>() {
                 public Boolean call(Tuple2<Integer, Rating> tuple) throws Exception {
                     return tuple._1() >= 6 && tuple._1() < 8;
-                    
                 }
             }
 	    ).map(
@@ -151,12 +151,14 @@ public class MatrixFactorBasedRecommendation {
 	        }
 	    }
 	    
-	    System.out.println("The smallest RMSE is " + minRMSE + " when rank = " + bestRank + ", numIter = " 
+	    System.out.println("The RMSE of test set is " + computeAccuracy(bestModel, test));
+	    System.out.println("The model is best when rank = " + bestRank + ", numIter = " 
 	    		+ bestNumIter + ", lambda = " + bestLambda);
-	    System.out.println("Recommended movies for user " + userId + ": " );
-	    List<Rating> items = getRecommendations(userId, bestModel,ratings, products);
+	    System.out.println("Recommended movies for user " + USER_ID + ": " );
+	    List<Rating> items = getRecommendations(USER_ID, bestModel,ratings, products);
+	    List<String> movieNames = Utils.getMovieList();
 	    for (Rating i : items) {
-	    	System.out.println(i);
+	    	System.out.println(i + " " + movieNames.get(i.product()));
 	    }
 
 }
@@ -262,7 +264,7 @@ public class MatrixFactorBasedRecommendation {
             });
 
             //get top 5 from the recommended products.
-            recommendations = recommendations.subList(0, itemNum);
+            recommendations = recommendations.subList(0, ITEM_NUM);
 
             return recommendations;
         }
