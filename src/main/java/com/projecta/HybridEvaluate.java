@@ -24,8 +24,8 @@ public class HybridEvaluate {
     private static final int RECOMMENDED_ITEM_NUM = 3;
 
     public static void main(String[] args) {
-        hybridItem();
-//        hybridUserBased();
+//        hybridItem();
+        hybridUserBased();
 
     }
 
